@@ -1,0 +1,29 @@
+<mat-toolbar color="primary">
+  <span>Problem Solving Techs</span>
+  <span class="spacer"></span>
+  <div *ngIf="isAuthUser">
+    {{ getUserInformation() }}
+    <button  mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>person</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="navigateProfile()">
+    <span>Edit Profile</span>
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button mat-menu-item disabled>
+    <span>Change Password</span>
+    <mat-icon>key</mat-icon>
+  </button>
+  <button mat-menu-item disabled>
+    <span>Settings</span>
+    <mat-icon>settings</mat-icon>
+  </button>
+  <button mat-menu-item (click)="logout()">
+    <span>Logout</span>
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-menu>

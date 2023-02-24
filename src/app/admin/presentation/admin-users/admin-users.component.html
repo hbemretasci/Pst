@@ -1,0 +1,31 @@
+<div *ngIf="usersFormState.loading">
+    <loading></loading>
+</div>
+
+<h1>{{ usersFormState.title }}</h1>
+
+<div class="mb-3">
+    <input type="text" class="form-control" [(ngModel)]="filterText" placeholder="Search...">
+    <small class="text-muted" *ngIf="filterText">Searched User: {{ filterText }}</small>
+</div>
+
+<div *ngIf="!usersFormState.loading && !usersFormState.error">
+    <ng-template [ngTemplateOutlet]="userTemplate" [ngTemplateOutletContext]="{ usersData: usersFormState.data }"></ng-template>
+</div>
+
+<ng-template #userTemplate let-users="usersData">
+    <div class="card mb-3" *ngFor="let user of users | userFilter: filterText">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="card-body">
+                    <h2 class="card-title">{{ user.fullName }}</h2>
+                    <p class="card-text">{{ user.role }}</p>
+                    <p class="card-text">{{ user.title | summary: 40 }}</p>
+                    <div>
+                        <a routerLink="/admin/user/{{ user.id }}" class="btn btn-sm btn-outline-primary">Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

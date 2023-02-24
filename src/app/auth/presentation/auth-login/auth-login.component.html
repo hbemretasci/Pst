@@ -1,0 +1,32 @@
+<div *ngIf="loginFormState.loading">
+    <loading></loading>
+</div>
+
+<h1>{{ loginFormState.title }}</h1>
+
+<div [formGroup]="userLoginForm">
+    <div class="form-container">
+
+        <p>
+            <mat-form-field appearance="fill">
+                <mat-label>Enter your email</mat-label>
+                <input matInput placeholder="user@pst.com" formControlName="email" required>
+                <mat-error *ngIf="email.invalid">{{ getEmailErrorMessage() }}</mat-error>
+            </mat-form-field>
+        </p>
+
+        <p>
+            <mat-form-field appearance="fill">
+                <mat-label>Enter your password</mat-label>
+                <input matInput [type]="passwordHide ? 'password' : 'text'" formControlName="password" required minlength='6'>
+                <mat-error *ngIf="password.invalid">{{ getPasswordErrorMessage() }}</mat-error>
+                <button mat-icon-button matSuffix (click)="passwordHide = !passwordHide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="passwordHide">
+                    <mat-icon>{{passwordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+            </mat-form-field>
+        </p>
+
+        <button mat-flat-button color="primary" [disabled]="userLoginForm.invalid" (click)="login()">Login</button>
+
+    </div>
+</div>
