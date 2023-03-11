@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { GetLoggedUserUseCase } from 'src/app/auth/domain/use-case/get-logged-user.usecase';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
+import { State } from 'src/app/shared/utils/state.model';
 import { LogoutUserUseCase } from '../../../auth/domain/use-case/logout-user.usecase';
 
 @Component({
@@ -15,12 +16,18 @@ import { LogoutUserUseCase } from '../../../auth/domain/use-case/logout-user.use
   ]
 })
 export class NavbarComponent implements OnInit {
-  private userInformation: string;
-
-  isAuthUser: boolean = false;
-  isAdminUser: boolean = false;
-  loading: boolean = true;
-  error: any;
+  
+  navbarState: State = {
+    title: 'Navbar',
+    loading: true,
+    error: false,
+    errorMessage: '',
+    data: {
+      isAuthUser: false,
+      isAdminUser: false,
+      userInformation: ''
+    }
+  }
 
   private getLoggedUserUseCase = inject(GetLoggedUserUseCase);
   private logoutUserUseCase = inject(LogoutUserUseCase);
@@ -31,26 +38,26 @@ export class NavbarComponent implements OnInit {
     this.getLoggedUserUseCase.execute().subscribe({
       next: (v) => {
         if(v) {
-          this.isAuthUser = true;
-          this.userInformation = v.name + " - " + v.role;
+          this.navbarState.data.isAuthUser = true;
+          this.navbarState.data.userInformation = v.name + " - " + v.role;
           if(v.role == "Admin") {
-            this.isAdminUser = true;
+            this.navbarState.data.isAdminUser = true;
           } else {
-            this.isAdminUser = false;
+            this.navbarState.data.isAdminUser = false;
           }
         } else {
-          this.isAuthUser = false;
+          this.navbarState.data.isAuthUser = false;
         }
-        this.loading = false;
+        this.navbarState.loading = false;
       },
       error: (e) => {
-        this.error = e;
-        this.loading = false;
+        this.navbarState.error = e;
+        this.navbarState.loading = false;
       }
     });
 
-    if(this.isAuthUser) {
-      if(this.isAdminUser) {
+    if(this.navbarState.data.isAuthUser) {
+      if(this.navbarState.data.isAdminUser) {
         this.navigateAdmin();
       } else {
         this.navigateUser();
@@ -66,7 +73,7 @@ export class NavbarComponent implements OnInit {
          title: 'Logout',
          content: 'Are you sure you want to logout?'
         },
-      width:'250px'
+      width:'300px'
     });
 
     logoutDialog.afterClosed().subscribe(result => {
@@ -94,7 +101,11 @@ export class NavbarComponent implements OnInit {
   }
 
   getUserInformation(): string {
-    return this.userInformation;
+    return this.navbarState.data.userInformation;
+  }
+
+  getIsAuthUser(): boolean {
+    return this.navbarState.data.isAuthUser;
   }
 
 }

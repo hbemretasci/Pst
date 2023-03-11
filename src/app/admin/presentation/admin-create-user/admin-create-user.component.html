@@ -2,80 +2,64 @@
     <loading></loading>
 </div>
 
-<h1>{{ createUserFormState.title }}</h1>
+<div class="screen-container">
+    <div class="form-title">
+        {{ createUserFormState.title }}
+    </div>
 
-<div [formGroup]="createUserForm">
-    <div class="form-container">
+    <form [formGroup]="createUserForm">
+        <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" required>
+            <mat-error *ngIf="name.invalid">{{ getNameErrorMessage() }}</mat-error>
+        </mat-form-field>
 
-        <p>
-            <mat-form-field appearance="fill">
-                <mat-label>Name</mat-label>
-                <input matInput formControlName="name" required>
-                <mat-error *ngIf="name.invalid">{{ getNameErrorMessage() }}</mat-error>
-            </mat-form-field>
-        </p>
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="user@pst.com" formControlName="email" required>
+            <mat-error *ngIf="email.invalid">{{ getEmailErrorMessage() }}</mat-error>
+        </mat-form-field>
 
-        <p>
-            <mat-form-field appearance="fill">
-                <mat-label>Email</mat-label>
-                <input matInput placeholder="user@pst.com" formControlName="email" required>
-                <mat-error *ngIf="email.invalid">{{ getEmailErrorMessage() }}</mat-error>
-            </mat-form-field>
-        </p>
+        <mat-form-field appearance="outline">
+            <mat-label>Role</mat-label>
+            <mat-select matInput formControlName="role" >
+                <mat-option *ngFor="let role of roles" [value]="role">{{ role }}</mat-option>
+            </mat-select>
+        </mat-form-field>
 
-        <p>
-            <mat-form-field appearance="fill">
-                <mat-label>Password</mat-label>
-                <input matInput [type]="passwordHide ? 'password' : 'text'" formControlName="password" required minlength='6'>
-                <mat-error *ngIf="password.invalid">{{ getPasswordErrorMessage() }}</mat-error>
-                <button mat-icon-button matSuffix (click)="passwordHide = !passwordHide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="passwordHide">
-                    <mat-icon>{{passwordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                </button>
-            </mat-form-field>
-        </p>
+        <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="passwordHide ? 'password' : 'text'" formControlName="password" required minlength='6'>
+            <mat-error *ngIf="password.invalid">{{ getPasswordErrorMessage() }}</mat-error>
+            <button mat-icon-button matSuffix (click)="passwordHide = !passwordHide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="passwordHide">
+                <mat-icon>{{passwordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
 
-        <p>
-            <mat-form-field appearance="fill">
-                <mat-label>Department</mat-label>
-                <input matInput formControlName="department">
-            </mat-form-field>
-        </p>
+        <mat-form-field appearance="outline">
+            <mat-label>Organization</mat-label>
+            <mat-select matInput formControlName="organization" >
+                <mat-option *ngFor="let organization of organizations" [value]="organization">{{ organization }}</mat-option>
+            </mat-select>
+        </mat-form-field>
 
-        <p>
-            <mat-form-field appearance="fill">
-                <mat-label>Title</mat-label>
-                <input matInput formControlName="title">
-            </mat-form-field>
-        </p>
+        <mat-form-field appearance="outline">
+            <mat-label>Organization Name</mat-label>
+            <input matInput formControlName="organizationName" required>
+            <mat-error *ngIf="organizationName.invalid">{{ getOrgNameErrorMessage() }}</mat-error>
+        </mat-form-field>
 
-        <p>
-            <mat-form-field appearance="fill">
-                <mat-label>Organization</mat-label>
-                <mat-select matInput formControlName="organization" >
-                    <mat-option *ngFor="let organization of organizations" [value]="organization">{{ organization }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-        </p>
+        <mat-form-field appearance="outline">
+            <mat-label>Department</mat-label>
+            <input matInput formControlName="department">
+        </mat-form-field>
 
-        <p>
-            <mat-form-field appearance="fill">
-                <mat-label>Organization Name</mat-label>
-                <input matInput formControlName="organizationName" required>
-                <mat-error *ngIf="organizationName.invalid">{{ getOrgNameErrorMessage() }}</mat-error>
-            </mat-form-field>
-        </p>
-
-        <p>
-            <mat-form-field appearance="fill">
-                <mat-label>Role</mat-label>
-                <mat-select matInput formControlName="role" >
-                    <mat-option *ngFor="let role of roles" [value]="role">{{ role }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-        </p>
+        <mat-form-field appearance="outline">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title">
+        </mat-form-field>
 
         <button mat-flat-button color="primary" [disabled]="createUserForm.invalid" (click)="register()">Create User</button>
         <button mat-flat-button color="warn" (click)="clearForm()">Clear Form</button>
-
-    </div>
+    </form>
 </div>

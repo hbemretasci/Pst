@@ -14,6 +14,7 @@ import { AlertDialogComponent } from 'src/app/shared/alert-dialog/alert-dialog.c
 })
 export class AdminCreateUserComponent {
   passwordHide = true;
+  
   createUserFormState: State = {
     title: 'Create User',
     loading: false,

@@ -14,6 +14,7 @@ import { LoginUserUseCase } from '../../domain/use-case/login-user.usecase';
 })
 export class AuthLoginComponent {
   passwordHide = true;
+  
   loginFormState: State = {
     title: 'Login',
     loading: false,

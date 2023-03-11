@@ -1,8 +1,13 @@
 <mat-toolbar color="primary">
-  <span>Problem Solving Techs</span>
-  <span class="spacer"></span>
-  <div *ngIf="isAuthUser">
-    {{ getUserInformation() }}
+  <mat-icon>published_with_changes</mat-icon>
+  
+  <span class="app-title">Problem Solving Techs</span>
+  
+  <div class="user-inf" *ngIf="getIsAuthUser()">
+    <span class="user">{{ getUserInformation() }}</span>
+  </div>
+  
+  <div *ngIf="getIsAuthUser()">
     <button  mat-icon-button [matMenuTriggerFor]="menu">
       <mat-icon>person</mat-icon>
     </button>
