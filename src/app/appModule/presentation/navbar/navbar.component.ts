@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GetLoggedUserUseCase } from 'src/app/auth/domain/use-case/get-logged-user.usecase';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { State } from 'src/app/shared/utils/state.model';
@@ -32,7 +32,7 @@ export class NavbarComponent implements OnInit {
   private getLoggedUserUseCase = inject(GetLoggedUserUseCase);
   private logoutUserUseCase = inject(LogoutUserUseCase);
   private router = inject(Router);
-  private dialog = inject(MatDialog)
+  private dialog = inject(MatDialog);
 
   ngOnInit(): void {
     this.getLoggedUserUseCase.execute().subscribe({
@@ -97,6 +97,7 @@ export class NavbarComponent implements OnInit {
   }
 
   navigateProfile(): void {
+    console.log(this.router.url);
     this.router.navigate(['/auth/profile']);
   }
 

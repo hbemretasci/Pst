@@ -10,13 +10,13 @@
     <form [formGroup]="createUserForm">
         <mat-form-field appearance="outline">
             <mat-label>Name</mat-label>
-            <input matInput formControlName="name" required>
+            <input matInput formControlName="name">
             <mat-error *ngIf="name.invalid">{{ getNameErrorMessage() }}</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
             <mat-label>Email</mat-label>
-            <input matInput placeholder="user@pst.com" formControlName="email" required>
+            <input matInput placeholder="user@pst.com" formControlName="email">
             <mat-error *ngIf="email.invalid">{{ getEmailErrorMessage() }}</mat-error>
         </mat-form-field>
 
@@ -29,7 +29,7 @@
 
         <mat-form-field appearance="outline">
             <mat-label>Password</mat-label>
-            <input matInput [type]="passwordHide ? 'password' : 'text'" formControlName="password" required minlength='6'>
+            <input matInput [type]="passwordHide ? 'password' : 'text'" formControlName="password">
             <mat-error *ngIf="password.invalid">{{ getPasswordErrorMessage() }}</mat-error>
             <button mat-icon-button matSuffix (click)="passwordHide = !passwordHide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="passwordHide">
                 <mat-icon>{{passwordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -45,7 +45,7 @@
 
         <mat-form-field appearance="outline">
             <mat-label>Organization Name</mat-label>
-            <input matInput formControlName="organizationName" required>
+            <input matInput formControlName="organizationName">
             <mat-error *ngIf="organizationName.invalid">{{ getOrgNameErrorMessage() }}</mat-error>
         </mat-form-field>
 
@@ -59,7 +59,7 @@
             <input matInput formControlName="title">
         </mat-form-field>
 
-        <button mat-flat-button color="primary" [disabled]="createUserForm.invalid" (click)="register()">Create User</button>
         <button mat-flat-button color="warn" (click)="clearForm()">Clear Form</button>
+        <button mat-flat-button color="primary" [disabled]="createUserForm.invalid" (click)="register()">Create User</button>
     </form>
 </div>

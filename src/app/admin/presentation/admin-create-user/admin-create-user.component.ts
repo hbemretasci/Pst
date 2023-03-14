@@ -31,14 +31,14 @@ export class AdminCreateUserComponent {
   private dialog = inject(MatDialog)
 
   createUserForm = new FormGroup({
-    name: new FormControl("", [Validators.required]),
-    email: new FormControl("", [Validators.required, Validators.email]),
-    password: new FormControl("", [Validators.required, Validators.minLength(6)]),
-    department: new FormControl(""),
-    title: new FormControl(""),
-    organization: new FormControl("Company"),
-    organizationName: new FormControl("", [Validators.required]),
-    role: new FormControl("User")
+    name: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    department: new FormControl(''),
+    title: new FormControl(''),
+    organization: new FormControl('Company'),
+    organizationName: new FormControl('', [Validators.required]),
+    role: new FormControl('User')
   })
 
   getNameErrorMessage(): string {
@@ -126,16 +126,7 @@ export class AdminCreateUserComponent {
   }
 
   clearForm(): void {
-    this.createUserForm.patchValue({
-      name: '',
-      email: '',
-      password: '',
-      department: '',
-      title: '',
-      organization: 'Company',
-      organizationName: '',
-      role: 'User'
-    });
+    this.createUserForm.reset();
   }
 
 }

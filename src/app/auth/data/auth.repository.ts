@@ -6,6 +6,9 @@ import { LoginModel } from "../domain/login.model";
 import { StoraggedUserEntity } from "./storagged-user.entity";
 import { AuthMapper } from "./auth.mapper";
 import { LoginResponseDto } from "./login-response.dto";
+import { UserModel } from "src/app/admin/domain/user.model";
+import { UserResponseDto } from "src/app/admin/data/user-response.dto";
+import { AdminMapper } from "src/app/admin/data/admin.mapper";
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +19,8 @@ export class AuthRepository {
     url = "http://localhost:5000/api/auth";
     
     mapper = new AuthMapper();
+    adminMapper = new AdminMapper();
+
 
     private httpClient = inject(HttpClient)
 
@@ -24,6 +29,13 @@ export class AuthRepository {
         .pipe( 
             map(r => this.mapper.loginToModel(r))
         )
+    }
+
+    getProfile(): Observable<UserModel> {
+        return this.httpClient.get<UserResponseDto>(this.url + '/profile')
+        .pipe(
+            map(r => this.adminMapper.userToModel(r))
+        );
     }
 
     removeLocalStorage(key: string) {

@@ -1,1 +1,46 @@
-<p>profile works!</p>
+<div *ngIf="profileFormState.loading">
+    <loading></loading>
+</div>
+
+<div class="screen-container">
+    <div class="form-title">
+        {{ profileFormState.title }}
+    </div>
+
+    <form [formGroup]="updateUserForm">
+        <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="user@pst.com" formControlName="email">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Role</mat-label>
+            <input matInput formControlName="role">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name">
+            <mat-error *ngIf="name.invalid">{{ getNameErrorMessage() }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Organization Name</mat-label>
+            <input matInput formControlName="organizationName">
+            <mat-error *ngIf="organizationName.invalid">{{ getOrgNameErrorMessage() }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Department</mat-label>
+            <input matInput formControlName="department">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title">
+        </mat-form-field>
+
+        <button mat-flat-button color="warn" (click)="cancel()">Cancel</button>
+        <button mat-flat-button color="primary" [disabled]="updateUserForm.invalid" (click)="save()">Save User</button>
+    </form>
+</div>

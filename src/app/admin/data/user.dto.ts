@@ -4,7 +4,7 @@ export interface UserDto {
     email: string,
     role: string,
     organization: string,
-    password: string,
+    password?: string,
     organizationName: string,
     title: string,
     department: string,
