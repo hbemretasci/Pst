@@ -1,19 +1,19 @@
 .screen-container {
     margin: auto; 
-    width: 90%;
+    width: 60%;
 }
 
 .form-title {
     font-size: 3rem;
     font-weight: bold;
     text-align: center;
-    padding-top: 1rem;
+    padding-top: 3rem;
 }
 
 form {
     padding-top: 3rem;
     margin: auto;
-    width: 70%;
+    width: 60%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(5, 1fr);

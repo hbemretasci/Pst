@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AlertDialogComponent } from 'src/app/shared/alert-dialog/alert-dialog.component';
@@ -33,30 +33,26 @@ export class AuthLoginComponent {
   })
 
   getEmailErrorMessage(): string {
-    if (this.email.hasError('required')) {
+    if (this.f['email'].hasError('required')) {
       return 'Please provide a email.';
     }
-    return this.email.hasError('email') ? 'Provide a valid email.' : '';
+    return this.f['email'].hasError('email') ? 'Provide a valid email.' : '';
   }
 
   getPasswordErrorMessage(): string {
-    if (this.password.hasError('required')) {
+    if (this.f['password'].hasError('required')) {
       return 'Please provide a password.';
     }
-    return this.password.hasError('minlength') ? 'Password must be at least 6 chars.' : '';
+    return this.f['password'].hasError('minlength') ? 'Password must be at least 6 chars.' : '';
   }
 
-  get email() {
-    return this.userLoginForm.get('email');
-  }
-
-  get password() {
-    return this.userLoginForm.get('password');
+  get f(): { [key: string]: AbstractControl } {
+    return this.userLoginForm.controls;
   }
 
   login() {
-    const email: string = this.email.value;
-    const password: string = this.password.value;
+    const email: string = this.f['email'].value;
+    const password: string = this.f['password'].value;
 
     this.loginFormState.loading = true;
     this.loginUserUseCase.execute({ email, password }).subscribe({

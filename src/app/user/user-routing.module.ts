@@ -6,12 +6,9 @@ import { UserHomeComponent } from "./presentation/user-home/user-home.component"
 
 const routes: Routes = [
   {
-    path: '',
-    component: UserHomeComponent,
-    canActivate: [AuthGuard],
-    children: [
-      { path: 'home', component: UserHomeComponent },
-      { path: 'crproject', component: UserCreateProjectComponent }
+    path: '', component: UserHomeComponent, canActivate: [AuthGuard], children: [
+      { path: 'crproject', component: UserCreateProjectComponent },
+      { path: '', redirectTo: '', pathMatch: 'full' }
     ]
   }
 ];

@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { GetLoggedUserUseCase } from 'src/app/auth/domain/use-case/get-logged-user.usecase';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { State } from 'src/app/shared/utils/state.model';
@@ -16,7 +16,6 @@ import { LogoutUserUseCase } from '../../../auth/domain/use-case/logout-user.use
   ]
 })
 export class NavbarComponent implements OnInit {
-  
   navbarState: State = {
     title: 'Navbar',
     loading: true,
@@ -33,9 +32,14 @@ export class NavbarComponent implements OnInit {
   private logoutUserUseCase = inject(LogoutUserUseCase);
   private router = inject(Router);
   private dialog = inject(MatDialog);
+  sub: any;
 
   ngOnInit(): void {
-    this.getLoggedUserUseCase.execute().subscribe({
+    this.getLoggedUserforNavigate();
+  }
+
+  getLoggedUserforNavigate(): void {
+    this.sub = this.getLoggedUserUseCase.execute().subscribe({
       next: (v) => {
         if(v) {
           this.navbarState.data.isAuthUser = true;
@@ -55,16 +59,10 @@ export class NavbarComponent implements OnInit {
         this.navbarState.loading = false;
       }
     });
+  }
 
-    if(this.navbarState.data.isAuthUser) {
-      if(this.navbarState.data.isAdminUser) {
-        this.navigateAdmin();
-      } else {
-        this.navigateUser();
-      }
-    } else {
-      this.navigateAuthLogin();
-    }
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   logout(): void {
@@ -79,26 +77,25 @@ export class NavbarComponent implements OnInit {
     logoutDialog.afterClosed().subscribe(result => {
       if(result) {
         this.logoutUserUseCase.execute();
-        this.navigateAuthLogin()
+        this.navigateTarget('/auth/login');
       }
     });
   }
 
-  navigateUser(): void {
-    this.router.navigate(['/user']);
+  navigateHome(): void {
+    if(this.navbarState.data.isAuthUser) {
+      if(this.navbarState.data.isAdminUser) {
+        this.navigateTarget('/admin');
+      } else {
+        this.navigateTarget('/user');
+      }
+    } else {
+      this.navigateTarget('/auth/login');
+    }
   }
 
-  navigateAdmin(): void {
-    this.router.navigate(['/admin']);
-  }
-
-  navigateAuthLogin(): void {
-    this.router.navigate(['/auth/login']);
-  }
-
-  navigateProfile(): void {
-    console.log(this.router.url);
-    this.router.navigate(['/auth/profile']);
+  navigateTarget(target: string): void {
+    this.router.navigate([target]);
   }
 
   getUserInformation(): string {

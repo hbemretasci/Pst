@@ -9,6 +9,10 @@ import { LoginResponseDto } from "./login-response.dto";
 import { UserModel } from "src/app/admin/domain/user.model";
 import { UserResponseDto } from "src/app/admin/data/user-response.dto";
 import { AdminMapper } from "src/app/admin/data/admin.mapper";
+import { ForgotPassModel } from "../domain/forgot-pass.model";
+import { ForgotPassResponseDto } from "./forgot-pass-response.dto";
+import { MessageModel } from "../domain/message.model";
+import { MessageResponseDto } from "./message-response.dto";
 
 @Injectable({
     providedIn: 'root'
@@ -21,13 +25,47 @@ export class AuthRepository {
     mapper = new AuthMapper();
     adminMapper = new AdminMapper();
 
-
     private httpClient = inject(HttpClient)
 
     loginUser(params: { email: string; password: string }): Observable<LoginModel> {
         return this.httpClient.post<LoginResponseDto>(this.url + '/login', params)
         .pipe( 
             map(r => this.mapper.loginToModel(r))
+        )
+    }
+
+    forgotPassword(params: { email: string }): Observable<ForgotPassModel> {
+        return this.httpClient.post<ForgotPassResponseDto>(this.url + '/forgotpassword', params)
+        .pipe( 
+            map(r => this.mapper.forgotToModel(r))
+        )
+    }
+
+    changePassword(params: { password: string }): Observable<MessageModel> {
+        return this.httpClient.put<MessageResponseDto>(this.url + '/changepassword', params)
+        .pipe( 
+            map(r => this.mapper.editToModel(r))
+        )
+    }
+
+    resetPassword(password: string, token:string): Observable<MessageModel> {
+        const query = "/resetpassword?resetPasswordToken=" + token; 
+        
+        return this.httpClient.put<MessageResponseDto>(this.url + query, { password })
+        .pipe( 
+            map(r => this.mapper.editToModel(r))
+        )
+    }
+
+    saveUserChanges(params: {
+        name: string,
+        organizationName: string,
+        department: String,
+        title: String 
+    }): Observable<UserModel> {
+        return this.httpClient.put<UserResponseDto>(this.url + '/edit', params)
+        .pipe( 
+            map(r => this.adminMapper.userToModel(r))
         )
     }
 

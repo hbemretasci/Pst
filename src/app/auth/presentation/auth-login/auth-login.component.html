@@ -10,18 +10,23 @@
     <form [formGroup]="userLoginForm">
         <mat-form-field appearance="outline">
             <mat-label>Enter your email</mat-label>
-            <input matInput placeholder="user@pst.com" formControlName="email" required>
-            <mat-error *ngIf="email.invalid">{{ getEmailErrorMessage() }}</mat-error>
+            <input matInput placeholder="user@pst.com" formControlName="email">
+            <mat-error *ngIf="f['email'].invalid">{{ getEmailErrorMessage() }}</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
             <mat-label>Enter your password</mat-label>
-            <input matInput [type]="passwordHide ? 'password' : 'text'" formControlName="password" required minlength='6'>
-            <mat-error *ngIf="password.invalid">{{ getPasswordErrorMessage() }}</mat-error>
-            <button mat-icon-button matSuffix (click)="passwordHide = !passwordHide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="passwordHide">
+            <input matInput [type]="passwordHide ? 'password' : 'text'" formControlName="password">
+            <mat-error *ngIf="f['password'].invalid">{{ getPasswordErrorMessage() }}</mat-error>
+            <button mat-icon-button matSuffix (click)="passwordHide = !passwordHide"
+            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="passwordHide">
                 <mat-icon>{{passwordHide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
         </mat-form-field>
+
+        <div class="forgot-password">
+            <a [routerLink]="'/auth/forgotPassword'">Forgot your password?</a>
+        </div>
 
         <button mat-flat-button color="primary" [disabled]="userLoginForm.invalid" (click)="login()">
             <mat-icon>login</mat-icon>

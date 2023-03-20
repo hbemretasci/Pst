@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserRegisterUseCase } from '../../domain/use-case/user-register.usecase';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { State } from 'src/app/shared/utils/state.model';
@@ -46,37 +46,25 @@ export class AdminCreateUserComponent {
   }
 
   getEmailErrorMessage(): string {
-    if (this.email.hasError('required')) {
+    if (this.f['email'].hasError('required')) {
       return 'Please provide a email.';
     }
-    return this.email.hasError('email') ? 'Provide a valid email.' : '';
+    return this.f['email'].hasError('email') ? 'Provide a valid email.' : '';
   }
 
   getPasswordErrorMessage(): string {
-    if (this.password.hasError('required')) {
+    if (this.f['password'].hasError('required')) {
       return 'Please provide a password.';
     }
-    return this.password.hasError('minlength') ? 'Password must be at least 6 chars.' : '';
+    return this.f['password'].hasError('minlength') ? 'Password must be at least 6 chars.' : '';
   }
 
   getOrgNameErrorMessage(): string {
     return 'Please provide a company.';
   }
 
-  get name() {
-    return this.createUserForm.get('name');
-  }
-
-  get email() {
-    return this.createUserForm.get('email');
-  }
-
-  get password() {
-    return this.createUserForm.get('password');
-  }
-
-  get organizationName() {
-    return this.createUserForm.get('organizationName');
+  get f(): { [key: string]: AbstractControl } {
+    return this.createUserForm.controls;
   }
 
   register() {

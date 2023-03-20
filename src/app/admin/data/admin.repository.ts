@@ -43,8 +43,6 @@ export class AdminRepository {
     getUsersByCategory(params: { categoryName: string }): Observable<UserModel[]> {
         let newUrl = this.url + '/users';
         if(params.categoryName) newUrl += '/' + params.categoryName;
-        
-        console.log(newUrl);
 
         return this.httpClient.get<UsersResponseDto>(newUrl)
         .pipe(

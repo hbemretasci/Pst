@@ -1,25 +1,33 @@
 <mat-toolbar color="primary">
-  <mat-icon>published_with_changes</mat-icon>
-  
-  <span class="app-title">Problem Solving Techs</span>
-  
-  <div class="user-inf" *ngIf="getIsAuthUser()">
-    <span class="user">{{ getUserInformation() }}</span>
+
+  <div class="title">
+    Problem Solving Techs
+  </div>
+
+  <div *ngIf="getIsAuthUser()" class="home">
+    <button mat-icon-button (click)="navigateHome()">
+      <mat-icon>home</mat-icon>
+    </button>
+  </div>
+
+  <div *ngIf="getIsAuthUser()" class="user">
+    {{ getUserInformation() }}
   </div>
   
-  <div *ngIf="getIsAuthUser()">
-    <button  mat-icon-button [matMenuTriggerFor]="menu">
+  <div *ngIf="getIsAuthUser()" class="menu">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
       <mat-icon>person</mat-icon>
     </button>
   </div>
+  
 </mat-toolbar>
 
 <mat-menu #menu="matMenu">
-  <button mat-menu-item (click)="navigateProfile()">
+  <button mat-menu-item (click)="navigateTarget('/auth/profile')">
     <span>Edit Profile</span>
     <mat-icon>edit</mat-icon>
   </button>
-  <button mat-menu-item disabled>
+  <button mat-menu-item (click)="navigateTarget('/auth/changePassword')">
     <span>Change Password</span>
     <mat-icon>key</mat-icon>
   </button>

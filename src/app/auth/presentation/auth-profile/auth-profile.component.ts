@@ -1,18 +1,20 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AlertDialogComponent } from 'src/app/shared/alert-dialog/alert-dialog.component';
 import { State } from 'src/app/shared/utils/state.model';
 import { GetProfileUseCase } from '../../domain/use-case/get-profile.usecase';
+import { SaveUserProfileChangesUseCase } from '../../domain/use-case/save-user-profile-changes.usecase';
 
 @Component({
   selector: 'auth-profile',
   templateUrl: './auth-profile.component.html',
   styleUrls: ['./auth-profile.component.css'],
   providers: [
-    GetProfileUseCase
+    GetProfileUseCase,
+    SaveUserProfileChangesUseCase
   ]
 })
 export class AuthProfileComponent implements OnInit  { 
@@ -25,6 +27,7 @@ export class AuthProfileComponent implements OnInit  {
   }
 
   private getProfileUseCase = inject(GetProfileUseCase);
+  private saveUserProfileChangesUseCase = inject(SaveUserProfileChangesUseCase);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
   private dialog = inject(MatDialog)
@@ -37,6 +40,7 @@ export class AuthProfileComponent implements OnInit  {
     organizationName: new FormControl('', [Validators.required]),
     role: new FormControl({value: '', disabled: true})
   })
+  sub: any;
 
   getNameErrorMessage(): string {
     return 'Please provide a name.';
@@ -46,17 +50,17 @@ export class AuthProfileComponent implements OnInit  {
     return 'Please provide a company.';
   }
 
-  get name() {
-    return this.updateUserForm.get('name');
-  }
-
-  get organizationName() {
-    return this.updateUserForm.get('organizationName');
+  get f(): { [key: string]: AbstractControl } {
+    return this.updateUserForm.controls;
   }
 
   ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData(): void {
     this.profileFormState.loading = true;
-    this.getProfileUseCase.execute().subscribe({
+    this.sub = this.getProfileUseCase.execute().subscribe({
       next: (v) => {
         this.profileFormState.loading = false;
         this.profileFormState.data = v; 
@@ -70,6 +74,10 @@ export class AuthProfileComponent implements OnInit  {
       }
     });
   }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+}
 
   updateForm(): void {
     this.updateUserForm.patchValue({
@@ -93,25 +101,35 @@ export class AuthProfileComponent implements OnInit  {
     });
   }
 
-  cancel() {
-    this.router.navigate(['/admin']);
+  close() {
+    this.router.navigate(['/user']);
   }
 
   save() {
-    this.showMessage();
-    const createUser = {
-        name: this.updateUserForm.value.name,
-        email: this.updateUserForm.value.email,
-        role: this.updateUserForm.value.role,
-        organizationName: this.updateUserForm.value.organizationName,
-        title: this.updateUserForm.value.title,
-        department: this.updateUserForm.value.department,
-        disabled: false  
+    const updateUser = {
+      name: this.updateUserForm.value.name,
+      organizationName: this.updateUserForm.value.organizationName,
+      title: this.updateUserForm.value.title,
+      department: this.updateUserForm.value.department
     }
+    this.profileFormState.loading = true;
+    this.saveUserProfileChangesUseCase.execute(updateUser).subscribe({
+      next: (v) => {
+        this.profileFormState.loading = false;
+        this.profileFormState.data = v; 
+        this.showMessage();
+      }, 
+      error: (e) => {
+        this.profileFormState.loading = false;
+        this.profileFormState.error = true;
+        this.profileFormState.errorMessage = e.message;
+        this.showError();
+      }
+    });
   }
 
   showMessage(): void {
-    this.snackBar.open(this.profileFormState.data.fullName + ' user saved.', '', {
+    this.snackBar.open(this.profileFormState.data.fullName + ' user changes saved.', '', {
       duration: 3000
     });
   }
