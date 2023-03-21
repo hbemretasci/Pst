@@ -2,11 +2,11 @@ mat-toolbar {
     display: flex;
 }
 
-.home {
-    margin-left: 3rem;
-}
-
 .user {
     margin-left: auto;
     margin-right: 3rem;
+}
+
+.home-buttons {
+    margin-left: 3rem;
 }

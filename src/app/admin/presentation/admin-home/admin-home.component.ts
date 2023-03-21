@@ -8,7 +8,7 @@ import { State } from 'src/app/shared/utils/state.model';
   styleUrls: ['./admin-home.component.css']
 })
 export class AdminHomeComponent implements OnInit {
-  menuItems: string[] = ['Admin Home', 'Create User', 'Users', 'User Home']; 
+  menuItems: string[] = ['Admin Home', 'Create User', 'Users']; 
 
   adminHomeState: State = {
     title: 'Admin Home',
@@ -40,10 +40,6 @@ export class AdminHomeComponent implements OnInit {
         this.router.navigate(['/admin/users']);
         break;  
      }
-     case 3: { 
-      this.router.navigate(['/user']);
-      break;  
-    }
    } 
   } 
 

@@ -1,5 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { GetUsersByCategoryUseCase } from '../../domain/use-case/get-users-bycategory.usecase';
 import { State } from 'src/app/shared/utils/state.model';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,10 +9,7 @@ import { GetAllUsersUseCase } from '../../domain/use-case/get-all-users.usecase'
   selector: 'admin-users',
   templateUrl: './admin-users.component.html',
   styleUrls: ['./admin-users.component.css'],
-  providers: [
-    GetUsersByCategoryUseCase,
-    GetAllUsersUseCase
-  ]
+  providers: [GetAllUsersUseCase]
 })
 export class AdminUsersComponent implements OnInit {
   filterText: string = "";
@@ -27,17 +23,19 @@ export class AdminUsersComponent implements OnInit {
     data: undefined
   }
   
-  // private activatedRoute = inject(ActivatedRoute);
-  // private getUsersByCategoryUseCase = inject(GetUsersByCategoryUseCase);
   private getAllUsersUseCase = inject(GetAllUsersUseCase);
   private dialog = inject(MatDialog);
 
   ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData(): void {
     this.usersFormState.loading = true;
     this.getAllUsersUseCase.execute().subscribe({
       next: (v) => {
         this.usersFormState.loading = false;
-        this.usersFormState.data = v; 
+        this.usersFormState.data = v;
       }, 
       error: (e) => {
         this.usersFormState.loading = false;

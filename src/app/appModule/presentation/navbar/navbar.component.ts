@@ -82,13 +82,17 @@ export class NavbarComponent implements OnInit {
     });
   }
 
-  navigateHome(): void {
+  navigateAdminHome(): void {
     if(this.navbarState.data.isAuthUser) {
-      if(this.navbarState.data.isAdminUser) {
-        this.navigateTarget('/admin');
-      } else {
-        this.navigateTarget('/user');
-      }
+      this.navigateTarget('/admin');
+    } else {
+      this.navigateTarget('/auth/login');
+    }
+  }
+
+  navigateUserHome(): void {
+    if(this.navbarState.data.isAuthUser) {
+      this.navigateTarget('/user');
     } else {
       this.navigateTarget('/auth/login');
     }
@@ -104,6 +108,10 @@ export class NavbarComponent implements OnInit {
 
   getIsAuthUser(): boolean {
     return this.navbarState.data.isAuthUser;
+  }
+
+  getIsAdminUser(): boolean {
+    return this.navbarState.data.isAdminUser;
   }
 
 }

@@ -1,12 +1,17 @@
 <mat-toolbar color="primary">
-
-  <div class="title">
+  <div>
     Problem Solving Techs
   </div>
 
-  <div *ngIf="getIsAuthUser()" class="home">
-    <button mat-icon-button (click)="navigateHome()">
+  <div class="home-buttons">
+    <button mat-icon-button (click)="navigateUserHome()">
       <mat-icon>home</mat-icon>
+    </button>
+  </div>
+
+  <div class="home-buttons">
+    <button mat-icon-button (click)="navigateAdminHome()" [disabled]="!getIsAdminUser()">
+      <mat-icon>manage_accounts</mat-icon>
     </button>
   </div>
 
@@ -19,7 +24,6 @@
       <mat-icon>person</mat-icon>
     </button>
   </div>
-  
 </mat-toolbar>
 
 <mat-menu #menu="matMenu">

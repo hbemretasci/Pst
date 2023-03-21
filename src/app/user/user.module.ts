@@ -5,13 +5,15 @@ import { SharedModule } from '../shared/shared.module';
 import { UserCreateProjectComponent } from './presentation/user-create-project/user-create-project.component';
 import { UserHomeComponent } from './presentation/user-home/user-home.component';
 import { UserRoutingModule } from './user-routing.module';
+import { UserProjectsComponent } from './presentation/user-projects/user-projects.component';
 
 
 
 @NgModule({
   declarations: [
     UserHomeComponent,
-    UserCreateProjectComponent
+    UserCreateProjectComponent,
+    UserProjectsComponent
   ],
   imports: [
     ReactiveFormsModule,
